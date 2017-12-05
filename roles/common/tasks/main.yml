@@ -1,5 +1,13 @@
+---
+
 - name: install packages
   package: name={{item}} state=latest
+  become: True
   with_items:
      - nginx
-  become: True
+     - vim
+
+- service:
+   name: nginx
+   state: started
+   enabled: yes
