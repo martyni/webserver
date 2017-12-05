@@ -83,8 +83,12 @@ Vagrant.configure("2") do |config|
     cat /root/.ssh/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
     ssh-keyscan -H localhost >> ~/.ssh/known_hosts
     mkdir -p /etc/ansible/
-    echo localhost ansible_user=vagrant>>/etc/ansible/hosts
+    echo localhost ansible_user=vagrant>/etc/ansible/hosts
     cd /vagrant
     ansible-playbook site.yml
+    echo " " 
+    echo "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+    echo Starting tests
+    curl -s localhost>/dev/null && echo Webserver up woohoo || echo Webserver down boo
   SHELL
 end
