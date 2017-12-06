@@ -88,7 +88,14 @@ Vagrant.configure("2") do |config|
     ansible-playbook site.yml
     echo " " 
     echo "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+    test_pass(){
+       echo $1
+    }
+    test_fail() {
+       echo $1
+       exit 1
+    }
     echo Starting tests
-    curl -s localhost>/dev/null && echo Webserver up woohoo || echo Webserver down boo
+    curl -s localhost>/dev/null && test_pass "Webserver up woohoo" || test_fail "Webserver down boo"
   SHELL
 end
