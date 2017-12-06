@@ -4,12 +4,14 @@
   package: name={{item}} state=latest
   with_items:
      - python-pip
+     - python-dev
 
 - name: install python dependencies
   pip: name={{item}} state=latest
   with_items:
      - flask
      - gunicorn
+     - pymongo==2.8
 
 - name: create webroot
   file:

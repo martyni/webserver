@@ -13,7 +13,7 @@
 - name: nginx app
   register: nginx_update
   copy:
-     src: "/vagrant/roles/webapp/files/nginx.conf"
+     src: "/vagrant/roles/webserver/files/nginx.conf"
      dest: "/etc/nginx/conf.d/hello.conf"
      group: root
      mode: "744"

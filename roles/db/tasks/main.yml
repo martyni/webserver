@@ -1,0 +1,42 @@
+
+- name: install packages
+  package: name={{item}} state=latest
+  with_items:
+     - mongodb-server
+
+- name: delete default conf
+  lineinfile:        
+    path:  /etc/mongodb.conf
+    state: absent
+    regexp: '^bind_ip = 127.0.0.1'
+    line: 'bind_ip = 127.0.0.1'
+
+- name: listen on public interface
+  register: mongo_conf
+  lineinfile:        
+    path:  /etc/mongodb.conf
+    state: present
+    regexp: '^bind_ip'
+    line: 'bind_ip = 0.0.0.0'
+
+
+- name: start mongo
+  register: mongo_started
+  when: mongo_conf.changed
+  service: 
+    name: mongodb
+    state: restarted
+    enabled: yes
+
+
+- name: mongo populator script
+  copy:
+     src: "/vagrant/roles/db/files/mongo.js"
+     dest: "/home/vagrant/mongo.js"
+     group: vagrant
+     mode: "755"
+
+- name: run populator
+  shell: mongo < /home/vagrant/mongo.js
+  when: mongo_started.changed
+
