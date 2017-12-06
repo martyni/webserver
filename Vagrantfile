@@ -104,5 +104,6 @@ Vagrant.configure("2") do |config|
     }
     echo Starting tests
     curl -s localhost>/dev/null && test_pass "Webserver up woohoo" || test_fail "Webserver down boo"
+    curl -s localhost:5000>/dev/null && test_pass "Appserver up woohoo" || test_fail "Appserver down boo"
   SHELL
 end

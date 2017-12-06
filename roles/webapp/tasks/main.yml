@@ -1,0 +1,60 @@
+---
+
+- name: install packages
+  package: name={{item}} state=latest
+  with_items:
+     - python-pip
+
+- name: install python dependencies
+  pip: name={{item}} state=latest
+  with_items:
+     - flask
+     - gunicorn
+
+- name: create webroot
+  file:
+     path: /var/www/
+     state: directory
+     mode: 0755
+
+- name: app file
+  copy:
+     src: "/vagrant/roles/webapp/files/hello_world.py"
+     dest: "/var/www/hello_world.py"
+     group: vagrant
+     mode: "755"
+
+- name: app start file
+  copy:
+     src: "/vagrant/roles/webapp/files/hello.conf"
+     dest: "/etc/init/hello.conf"
+     group: root
+     mode: "744"
+
+- name: start app
+  service: 
+     name: hello
+     state: started
+     enabled: yes
+
+- name: nginx app
+  register: nginx_update
+  copy:
+     src: "/vagrant/roles/webapp/files/nginx.conf"
+     dest: "/etc/nginx/conf.d/hello.conf"
+     group: root
+     mode: "744"
+     force: yes
+
+- name: remove default config
+  when: nginx_update.changed
+  file:
+     path: /etc/nginx/sites-available/default
+     state: absent
+
+- name: reload nginx
+  when: nginx_update.changed
+  service:
+     name: nginx
+     state: reloaded
+
