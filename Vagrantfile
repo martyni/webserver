@@ -71,19 +71,26 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt-get install -y python-pip 
-    pip install virtualenv
-    virtualenv ansible
-    source ansible/bin/activate
-    pip install --upgrade setuptools
-    pip install cffi
-    pip install ansible
-    ssh-keygen -f "/root/.ssh/id_rsa" -t rsa -N ""
-    cat /root/.ssh/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
-    ssh-keyscan -H localhost >> ~/.ssh/known_hosts
-    mkdir -p /etc/ansible/
-    echo localhost ansible_user=vagrant>/etc/ansible/hosts
+    if [ -e /root/init ]
+      then 
+         echo "Skipping setup"
+         source ansible/bin/activate
+    else 
+       apt-get update
+       apt-get install -y python-pip 
+       pip install virtualenv
+       virtualenv ansible
+       source ansible/bin/activate
+       pip install --upgrade setuptools
+       pip install cffi
+       pip install ansible
+       ssh-keygen -f "/root/.ssh/id_rsa" -t rsa -N ""
+       cat /root/.ssh/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
+       ssh-keyscan -H localhost >> ~/.ssh/known_hosts
+       mkdir -p /etc/ansible/
+       echo localhost ansible_user=vagrant>/etc/ansible/hosts
+       touch /root/init
+    fi
     cd /vagrant
     ansible-playbook site.yml
     echo " " 
