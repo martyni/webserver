@@ -1,5 +1,20 @@
 ---
-- hosts: all 
+- hosts: controller 
   become: yes
   roles:
     - common
+    - users
+    - webserver
+
+- hosts: db
+  become: yes
+  roles:
+    - update
+    - db
+
+- hosts: app
+  become: yes
+  roles:
+    - update
+    - webapp
+

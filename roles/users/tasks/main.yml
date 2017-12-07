@@ -1,0 +1,22 @@
+---
+
+- name: check admin group present
+  group:
+    name: admin
+    state: present
+
+- name: admin group has sudo access with password
+  lineinfile:        
+    path: /etc/sudoers
+    state: present
+    regexp: '^%admin'
+    line: '%admin ALL=(ALL) ALL'
+    validate: 'visudo -cf %s'
+
+- name: explicitly let vagrant user sudo without password
+  lineinfile:        
+    path: /etc/sudoers
+    state: present
+    regexp: '^%vagrant'
+    line: '%vagrant ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'

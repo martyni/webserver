@@ -3,10 +3,5 @@
 - name: install packages
   package: name={{item}} state=latest
   with_items:
-     - nginx
      - vim
 
-- service:
-   name: nginx
-   state: started
-   enabled: yes

@@ -1,0 +1,49 @@
+---
+
+- name: install packages
+  package: name={{item}} state=latest
+  with_items:
+     - python-pip
+     - python-dev
+
+- name: install python dependencies
+  pip: name={{item}} state=latest
+  with_items:
+     - flask
+     - gunicorn
+     - pymongo==2.8
+
+- name: create webroot
+  file:
+     path: /var/www/
+     state: directory
+     mode: 0755
+
+- name: app file
+  register: app_code
+  copy:
+     src: "/vagrant/roles/webapp/files/hello_world.py"
+     dest: "/var/www/hello_world.py"
+     group: vagrant
+     mode: "755"
+
+- name: app start file
+  copy:
+     src: "/vagrant/roles/webapp/files/hello.conf"
+     dest: "/etc/init/hello.conf"
+     group: root
+     mode: "744"
+
+- name: start app
+  service: 
+     name: hello
+     state: started
+     enabled: yes
+
+
+- name: reload app
+  when: app_code.changed
+  service: 
+     name: hello
+     state: restarted
+     enabled: yes
