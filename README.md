@@ -24,7 +24,7 @@ vagrant provision controller
 
 ```
 
-I spent 2 evenings working on this project (about 8 hours).
+I spent about 8 hours over the last 2 days (mostly in the evening).
 This is my local vagrant environment
 ```
 vagrant-share (1.1.8, system)
