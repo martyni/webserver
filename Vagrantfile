@@ -82,6 +82,7 @@ EOF
        for host in  192.168.33.11:5000 192.168.33.12:5000
          do curl -s $host>/dev/null && test_pass "Appserver $host up woohoo" || test_fail "Appserver $host down boo"
        done
+       do curl  192.168.33.10 | grep  bootstrapcdn && test_pass "webserver contains bootstrap link" || test_fail "webserver doesn't contains bootstrap link"
        echo Check website at http://192.168.33.10
      SHELL
   end   
