@@ -6,8 +6,8 @@ db = client.webapp
 
 @app.route("/")
 def hello():
-   body = "<h1>{title}</h1>\n<img src='{gif}'><img>\n<article>{article}</article>\n"
-   page = ''
+   body = "<h1>{title}</h1>\n<img height='300' src='{gif}'><img>\n<article>{article}</article>\n"
+   page = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">'
    for ob in db.webapp.find():
       page += body.format(
       article=ob['article'],

@@ -79,9 +79,10 @@ EOF
        }
        echo Starting tests
        curl -s localhost>/dev/null && test_pass "Webserver up woohoo" || test_fail "Webserver down boo"
-       for i in {1..2}
-         do curl -s 192.168.33.1$i:5000>/dev/null && test_pass "Appserver$i up woohoo" || test_fail "Appserver$i down boo"
+       for host in  192.168.33.11:5000 192.168.33.12:5000
+         do curl -s $host>/dev/null && test_pass "Appserver $host up woohoo" || test_fail "Appserver $host down boo"
        done
+       echo Check website at http://192.168.33.10
      SHELL
   end   
 end

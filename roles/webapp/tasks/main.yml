@@ -20,6 +20,7 @@
      mode: 0755
 
 - name: app file
+  register: app_code
   copy:
      src: "/vagrant/roles/webapp/files/hello_world.py"
      dest: "/var/www/hello_world.py"
@@ -40,3 +41,9 @@
      enabled: yes
 
 
+- name: reload app
+  when: app_code.changed
+  service: 
+     name: hello
+     state: restarted
+     enabled: yes
